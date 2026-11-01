@@ -531,8 +531,8 @@
     signline: ["SignLine", "ASL-to-caption video calls. 🏆 Best Live Demo, Girls Hoo Hack.", "https://signline-api.fly.dev"],
     speakup: ["Speak Up", "Impromptu debate trainer. 🏆 1st Place Beginner, HackNC.", "https://speak-up.fly.dev"],
     intent: ["Intent", "Idea → requirement-traced build plan for coding agents. Nemotron on Nebius. 853 tests.", "https://show-intent.fly.dev"],
-    venn: ["Venn", "Account-free group scheduling with private calendar overlays. 239 tests.", "https://devpost.com/software/venn-vkoaqp"],
-    benchwarmers: ["Benchwarmers", "Multiplayer sports game night via a simulated Alexa+ display over MCP. 1,604 tests.", "https://devpost.com/software/benchwarmers"],
+    venn: ["Venn", "Account-free group scheduling with private calendar overlays. 239 tests. ⏳ Results pending.", "https://devpost.com/software/venn-vkoaqp"],
+    benchwarmers: ["Benchwarmers", "Multiplayer sports game night via a simulated Alexa+ display over MCP. 1,604 tests. ⏳ Results pending.", "https://devpost.com/software/benchwarmers"],
     pixie: ["Pixie", "AI cursor companion for Windows that points and draws.", "https://github.com/Azrkiel/pixie"],
     "model-router": ["model-router", "Claude Code mod: cheapest model that fits, with junior→senior escalation.", "https://github.com/Azrkiel/model-router"],
   };
@@ -592,7 +592,7 @@
         "agents.md       Claude Code · Codex · Gemini · Nemotron · MCP\nml.md           PyTorch · PyG · Hugging Face · LoRA · MediaPipe\ncad-kernel.md   CadQuery · OpenCASCADE · PicoGK · Fusion 360 · Inventor\nsimulation.md   OpenFOAM\nship.md         TypeScript · Python · Java · SQL · Next.js · FastAPI · Docker"
       ),
     wins: () =>
-      print("🏆 SignLine — Best Live Demo, Girls Hoo Hack (Oct 2026)\n🏆 Speak Up — 1st Place Beginner Track, HackNC (Oct 2026)\n⏳ Intent — Nebius × NVIDIA Global AI Hackathon (results pending)"),
+      print("🏆 SignLine — Best Live Demo, Girls Hoo Hack (Oct 2026)\n🏆 Speak Up — 1st Place Beginner Track, HackNC (Oct 2026)\n⏳ Intent — Nebius × NVIDIA Global AI Hackathon (results pending)\n⏳ Venn — results pending\n⏳ Benchwarmers — results pending"),
     resume: () => {
       window.open("assets/Kevin-Jiang-Resume.pdf", "_blank", "noopener");
       print("opening resume…");
