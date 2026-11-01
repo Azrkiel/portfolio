@@ -217,6 +217,52 @@
           <p class="section-note">Things I've built and delivered.</p>
         </header>
 
+        <!-- ───── Broadcast: the project player ───── -->
+        <div class="player reveal" id="player" aria-label="Project player">
+          <div class="player-slot" id="playerSlot">
+            <div class="pw" id="pw">
+              <div class="pw-bar" id="pwBar">
+                <span class="pw-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <div class="pw-url">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                  <span id="pwUrl">kevin.agent/broadcast</span>
+                </div>
+                <div class="pw-actions">
+                  <a id="pwOpen" href="#" target="_blank" rel="noopener" aria-label="Open project in a new tab" title="Open in new tab">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                  </a>
+                  <button type="button" id="pwPop" aria-label="Pop out mini-player" title="Pop out">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="12" y="11" width="7" height="5" fill="currentColor"/></svg>
+                  </button>
+                  <button type="button" id="pwClose" class="pw-only-docked" aria-label="Close mini-player" title="Close">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="pw-screen" id="pwScreen"></div>
+              <div class="pw-transport">
+                <button type="button" id="pwPrev" aria-label="Previous project">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 5 9 12l10 7z"/></svg>
+                </button>
+                <button type="button" id="pwPlay" aria-label="Pause slideshow">
+                  <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                  <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>
+                </button>
+                <button type="button" id="pwNext" aria-label="Next project">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 5l10 7-10 7z"/></svg>
+                </button>
+                <div class="pw-now"><span id="pwIdx">01 / 09</span><span id="pwTitle"></span></div>
+                <div class="pw-progress" aria-hidden="true"><i id="pwProgress"></i></div>
+              </div>
+            </div>
+            <div class="pw-ghost" id="pwGhost" hidden>
+              <p>Now playing in the mini-player.</p>
+              <button type="button" class="btn btn-ghost btn-sm" id="pwReturn">Bring it back</button>
+            </div>
+          </div>
+          <ol class="playlist" id="playlist" aria-label="Projects in the player"></ol>
+        </div>
+
         <div class="filters reveal" role="toolbar" aria-label="Filter projects">
           <button class="filter is-active" data-filter="all" aria-pressed="true">All</button>
           <button class="filter" data-filter="agents" aria-pressed="false">Agents</button>

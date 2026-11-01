@@ -503,6 +503,259 @@
     };
   })();
 
+  /* ───────────────── broadcast: the project player ───────────────── */
+  const player = (() => {
+    const pw = $("#pw");
+    if (!pw) return null;
+    const screen = $("#pwScreen");
+    const urlEl = $("#pwUrl");
+    const openEl = $("#pwOpen");
+    const idxEl = $("#pwIdx");
+    const titleEl = $("#pwTitle");
+    const bar = $("#pwProgress");
+    const playBtn = $("#pwPlay");
+    const list = $("#playlist");
+    const ghost = $("#pwGhost");
+    const slot = $("#playerSlot");
+
+    // kind: live = embeddable site, video = YouTube demo, spec = poster only
+    const items = [
+      { key: "signline", name: "SignLine", kind: "live", src: "https://signline-api.fly.dev", allow: "camera; microphone; fullscreen",
+        tag: "ASL-to-caption video calls", badge: "Winner · Best Live Demo", more: "https://devpost.com/software/signal-zku8j7",
+        blurb: "Signs become editable captions; speech is live-captioned. Allow camera access to try it." },
+      { key: "speakup", name: "Speak Up", kind: "live", src: "https://speak-up.fly.dev", allow: "microphone; fullscreen",
+        tag: "Impromptu debate trainer", badge: "1st Place · HackNC", more: "https://devpost.com/software/speak-up-4ofanr",
+        blurb: "Give a speech, get a rubric score. Allow the microphone to try it." },
+      { key: "intent", name: "Intent", kind: "live", src: "https://show-intent.fly.dev", allow: "fullscreen",
+        tag: "Idea → requirement-traced build plan", badge: "Results pending", more: "https://devpost.com/software/intent-3dug9q",
+        blurb: "Describe a rough idea and get a cited brief a coding agent can build from." },
+      { key: "venn", name: "Venn", kind: "video", yt: "befQma3HH5U", href: "https://devpost.com/software/venn-vkoaqp",
+        tag: "Let's find a time, together.", badge: "Results pending", blurb: "Account-free group scheduling with private calendar overlays." },
+      { key: "benchwarmers", name: "Benchwarmers", kind: "video", yt: "SeeheqsixKc", href: "https://devpost.com/software/benchwarmers",
+        tag: "Draft your squad. Call the next play.", badge: "Results pending", blurb: "Game night driven by a simulated Alexa+ display over MCP." },
+      { key: "xvant", name: "XVANT", kind: "spec", href: "https://github.com/Azrkiel/xvant-agent",
+        tag: "Multi-agent orchestration harness", blurb: "Codex, Claude Code and OpenCode in parallel on isolated git worktrees." },
+      { key: "mirum", name: "Mirum", kind: "spec", href: "https://github.com/Azrkiel/Mirum",
+        tag: "Think it. Have it.", blurb: "Text → parametric B-Rep CAD assemblies. 78 of 82 prompts passed." },
+      { key: "pixie", name: "Pixie", kind: "spec", href: "https://github.com/Azrkiel/pixie",
+        tag: "AI cursor companion for Windows", blurb: "An agent with a body: it points and draws on your screen." },
+      { key: "model-router", name: "model-router", kind: "spec", href: "https://github.com/Azrkiel/model-router",
+        tag: "Cheapest model that fits, then escalate", blurb: "A Claude Code mod with junior-to-senior escalation hand-offs." },
+    ];
+
+    // borrow each project's glyph + chips from its card so there's one source of truth
+    const cardFor = (name) => $$(".cards .card").find((c) => $("h3", c)?.textContent.trim() === name);
+    items.forEach((it) => {
+      const card = cardFor(it.name);
+      it.glyph = card ? $(".plate svg", card)?.outerHTML : "";
+      it.chips = card ? $(".chips", card)?.outerHTML : "";
+      it.open = it.src || it.href;
+    });
+
+    const DWELL = 9000;
+    let i = 0;
+    let playing = !reduceMotion;
+    let launched = false; // an iframe / video is running; slideshow halts
+    let elapsed = 0, last = 0, raf = 0;
+    let inView = false;
+
+    const pad = (n) => String(n).padStart(2, "0");
+    const host = (u) => u.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    const kindLabel = { live: "Live site", video: "Demo video", spec: "Project" };
+
+    list.innerHTML = items
+      .map((it, n) => `<li><button type="button" data-i="${n}"><span class="pl-n"><span>${pad(n + 1)}</span></span><span class="pl-name">${escapeHtml(it.name)}</span><span class="pl-kind">${kindLabel[it.kind]}</span></button></li>`)
+      .join("");
+
+    const poster = (it) => {
+      const cta =
+        it.kind === "live"
+          ? `<button type="button" class="btn btn-solid" data-launch><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Launch live site</button>`
+          : it.kind === "video"
+          ? `<button type="button" class="btn btn-solid" data-launch><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>Play demo</button>`
+          : `<a class="btn btn-solid" href="${it.href}" target="_blank" rel="noopener">View on GitHub ↗</a>`;
+      const second = it.more ? `<a class="btn btn-ghost" href="${it.more}" target="_blank" rel="noopener">Devpost ↗</a>` : "";
+      return `<div class="slide">
+        <div class="slide-glyph">${it.glyph}</div>
+        <div class="slide-copy">
+          <p class="slide-kind">${kindLabel[it.kind]}${it.badge ? ` <b>${escapeHtml(it.badge)}</b>` : ""}</p>
+          <h3>${escapeHtml(it.name)}</h3>
+          <p><strong>${escapeHtml(it.tag)}</strong><br>${escapeHtml(it.blurb)}</p>
+          ${it.chips || ""}
+          <div class="cta-row">${cta}${second}</div>
+        </div>
+      </div>`;
+    };
+
+    const render = () => {
+      const it = items[i];
+      launched = false;
+      screen.innerHTML = poster(it);
+      urlEl.textContent = host(it.open);
+      openEl.href = it.open;
+      idxEl.textContent = `${pad(i + 1)} / ${pad(items.length)}`;
+      titleEl.textContent = `${it.name} — ${it.tag}`;
+      $$("button", list).forEach((b) => b.setAttribute("aria-current", String(Number(b.dataset.i) === i)));
+      elapsed = 0;
+      paintProgress();
+    };
+
+    const launch = () => {
+      const it = items[i];
+      if (it.kind === "spec") return;
+      launched = true;
+      setPlaying(false);
+      const src = it.kind === "video" ? `https://www.youtube-nocookie.com/embed/${it.yt}?autoplay=1&rel=0` : it.src;
+      const allow = it.kind === "video" ? "autoplay; encrypted-media; picture-in-picture; fullscreen" : it.allow;
+      urlEl.textContent = it.kind === "video" ? `youtube.com/watch?v=${it.yt}` : host(it.src);
+      openEl.href = it.kind === "video" ? `https://www.youtube.com/watch?v=${it.yt}` : it.src;
+      screen.innerHTML = `<div class="pw-loading" id="pwLoading"><i></i><span>${it.kind === "live" ? "Waking the server…" : "Loading demo…"}</span><span style="text-transform:none;letter-spacing:0">Not loading? <a href="${openEl.href}" target="_blank" rel="noopener" style="border-bottom:1px solid var(--line-strong)">Open it in a new tab ↗</a></span></div>`;
+      const f = document.createElement("iframe");
+      f.src = src;
+      f.title = `${it.name} — ${kindLabel[it.kind]}`;
+      f.allow = allow;
+      f.allowFullscreen = true;
+      f.loading = "eager";
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.addEventListener("load", () => $("#pwLoading")?.classList.add("is-done"));
+      screen.appendChild(f);
+    };
+
+    const go = (n) => {
+      i = (n + items.length) % items.length;
+      render();
+    };
+
+    const paintProgress = () => {
+      bar.style.transform = `scaleX(${launched ? 0 : Math.min(1, elapsed / DWELL)})`;
+    };
+
+    const tick = (now) => {
+      const dt = last ? now - last : 0;
+      last = now;
+      const docked = pw.classList.contains("is-docked");
+      if (playing && !launched && !hovering && (inView || docked) && !document.hidden) {
+        elapsed += dt;
+        if (elapsed >= DWELL) go(i + 1);
+      }
+      paintProgress();
+      raf = requestAnimationFrame(tick);
+    };
+
+    const setPlaying = (on) => {
+      playing = on;
+      playBtn.classList.toggle("is-paused", !on);
+      playBtn.setAttribute("aria-label", on ? "Pause slideshow" : "Play slideshow");
+    };
+
+    // dock / undock (pop out to a floating mini-player)
+    const dock = () => {
+      if (pw.classList.contains("is-docked")) return;
+      ghost.hidden = false;
+      document.body.appendChild(pw);
+      pw.classList.add("is-docked");
+      pw.style.left = pw.style.top = pw.style.bottom = "";
+      $("#pwPop").setAttribute("aria-label", "Return player to page");
+    };
+    const undock = () => {
+      if (!pw.classList.contains("is-docked")) return;
+      pw.classList.remove("is-docked");
+      pw.style.left = pw.style.top = pw.style.bottom = "";
+      slot.insertBefore(pw, ghost);
+      ghost.hidden = true;
+      $("#pwPop").setAttribute("aria-label", "Pop out mini-player");
+    };
+    const close = () => {
+      undock();
+      if (launched) render(); // stop the iframe/video
+    };
+
+    // drag the mini-player by its title bar
+    (() => {
+      const handle = $("#pwBar");
+      let sx = 0, sy = 0, ox = 0, oy = 0, drag = false;
+      handle.addEventListener("pointerdown", (e) => {
+        if (!pw.classList.contains("is-docked") || e.target.closest("a,button")) return;
+        drag = true;
+        const r = pw.getBoundingClientRect();
+        sx = e.clientX; sy = e.clientY; ox = r.left; oy = r.top;
+        handle.setPointerCapture(e.pointerId);
+      });
+      handle.addEventListener("pointermove", (e) => {
+        if (!drag) return;
+        const r = pw.getBoundingClientRect();
+        const x = Math.max(4, Math.min(window.innerWidth - r.width - 4, ox + e.clientX - sx));
+        const y = Math.max(4, Math.min(window.innerHeight - r.height - 4, oy + e.clientY - sy));
+        pw.style.left = x + "px";
+        pw.style.top = y + "px";
+        pw.style.bottom = "auto";
+      });
+      const end = () => (drag = false);
+      handle.addEventListener("pointerup", end);
+      handle.addEventListener("pointercancel", end);
+    })();
+
+    // wiring
+    $("#pwPrev").addEventListener("click", () => go(i - 1));
+    $("#pwNext").addEventListener("click", () => go(i + 1));
+    playBtn.addEventListener("click", () => {
+      if (launched) { render(); setPlaying(true); return; }
+      setPlaying(!playing);
+    });
+    $("#pwPop").addEventListener("click", () => (pw.classList.contains("is-docked") ? undock() : dock()));
+    $("#pwClose").addEventListener("click", close);
+    $("#pwReturn").addEventListener("click", undock);
+    list.addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-i]");
+      if (!b) return;
+      go(Number(b.dataset.i));
+      setPlaying(false);
+    });
+    screen.addEventListener("click", (e) => {
+      if (e.target.closest("[data-launch]")) launch();
+    });
+    // pause the slideshow while someone is hovering/reading the screen
+    let hovering = false;
+    screen.addEventListener("pointerenter", () => (hovering = true));
+    screen.addEventListener("pointerleave", () => (hovering = false));
+
+    new IntersectionObserver((entries) => (inView = entries[0].isIntersecting), { threshold: 0.35 }).observe(slot);
+
+    // "▶ Play" links on each project card
+    items.forEach((it, n) => {
+      const card = cardFor(it.name);
+      const links = card && $(".card-links", card);
+      if (!links) return;
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = it.kind === "spec" ? "▶ Preview" : it.kind === "video" ? "▶ Play demo" : "▶ Play here";
+      b.addEventListener("click", () => api.play(it.key));
+      links.prepend(b);
+    });
+
+    render();
+    setPlaying(playing);
+    raf = requestAnimationFrame(tick);
+
+    const api = {
+      keys: items.map((it) => it.key),
+      play(key, opts = {}) {
+        const n = items.findIndex((it) => it.key === key || it.key.startsWith(key));
+        if (n < 0) return false;
+        go(n);
+        setPlaying(false);
+        if (!pw.classList.contains("is-docked")) {
+          $("#player").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+        }
+        if (opts.launch) launch();
+        return items[n];
+      },
+      dock,
+      undock,
+    };
+    return api;
+  })();
+
   /* ───────────────── console (the agent) ───────────────── */
   const con = $("#console");
   const out = $("#consoleOut");
@@ -550,6 +803,8 @@
           "  whoami          who is kevin",
           "  ls              list dispatches (projects)",
           "  open &lt;name&gt;     open a project, e.g. <i>open mirum</i>",
+          "  play &lt;name&gt;     show a project in the player (play signline)",
+          "  popout          float the player in the corner",
           "  research        what i'm researching",
           "  skills          loaded skills",
           "  wins            hackathon results",
@@ -577,6 +832,19 @@
       if (!key) return print("usage: open &lt;name&gt; — run <i>ls</i> to see names");
       if (!p) return print(`open: no dispatch named '${escapeHtml(arg)}'`);
       print(`<b>${p[0]}</b> — ${escapeHtml(p[1])}\n→ ${link(p[2])}`);
+    },
+    play: (arg) => {
+      if (!player) return print("player unavailable");
+      if (!arg) return print("usage: play &lt;name&gt; — one of: " + player.keys.join(", "));
+      const it = player.play(arg.toLowerCase().replace(/\s+/g, ""));
+      if (!it) return print(`play: nothing called '${escapeHtml(arg)}'. try: ${player.keys.join(", ")}`);
+      print(`▶ now playing <b>${escapeHtml(it.name)}</b>`);
+      setTimeout(closeConsole, 500);
+    },
+    popout: () => {
+      if (!player) return print("player unavailable");
+      player.dock();
+      print("player popped out. drag it by the title bar.");
     },
     research: () =>
       print(
@@ -683,7 +951,11 @@
       e.preventDefault();
     } else if (e.key === "Tab") {
       const v = input.value.trim();
-      const pool = v.startsWith("open ") ? Object.keys(projects).map((k) => "open " + k) : Object.keys(commands);
+      const pool = v.startsWith("open ")
+        ? Object.keys(projects).map((k) => "open " + k)
+        : v.startsWith("play ") && player
+        ? player.keys.map((k) => "play " + k)
+        : Object.keys(commands);
       const hit = pool.find((c) => c.startsWith(v) && c !== v);
       if (hit) { input.value = hit; e.preventDefault(); }
     }
