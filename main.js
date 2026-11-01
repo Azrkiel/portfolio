@@ -592,7 +592,7 @@
         "agents.md       Claude Code · Codex · Gemini · Nemotron · MCP\nml.md           PyTorch · PyG · Hugging Face · LoRA · MediaPipe\ncad-kernel.md   CadQuery · OpenCASCADE · PicoGK · Fusion 360 · Inventor\nsimulation.md   OpenFOAM\nship.md         TypeScript · Python · Java · SQL · Next.js · FastAPI · Docker"
       ),
     wins: () =>
-      print("🏆 SignLine — Best Live Demo, Girls Hoo Hack (Oct 2026)\n🏆 Speak Up — 1st Place Beginner Track, HackNC (Oct 2026)\n⏳ Intent — Nebius × NVIDIA Global AI Hackathon (results pending)\n⏳ Venn — results pending\n⏳ Benchwarmers — results pending"),
+      print("🏆 SignLine — Best Live Demo, Girls Hoo Hack (Oct 2026)\n🏆 Speak Up — 1st Place Beginner Track, HackNC (Oct 2026)\n⏳ Intent — Nebius × NVIDIA Global AI Hackathon (results pending)\n⏳ Venn — Devpost Build With AI: Basics (results pending)\n⏳ Benchwarmers — Build, Ship, Shape: Amazon Developer Hackathon (results pending)"),
     resume: () => {
       window.open("assets/Kevin-Jiang-Resume.pdf", "_blank", "noopener");
       print("opening resume…");
