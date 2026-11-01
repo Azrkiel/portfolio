@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Kevin Jiang — Messenger Between Atoms &amp; Agents</title>
+  <meta name="description" content="Kevin Jiang (Azrkiel) — Mechanical Engineering at UVA. Multi-agent systems that design physical things, text-to-CAD research, and award-winning hackathon builds." />
+  <meta name="theme-color" content="#1212e6" />
+  <meta property="og:title" content="Kevin Jiang — Messenger Between Atoms &amp; Agents" />
+  <meta property="og:description" content="Multi-agent systems, text-to-CAD research, and hackathon builds by Kevin Jiang (Azrkiel)." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231212e6'/%3E%3Cpath d='M32 10v46M20 22c8 0 12 6 12 6s4-6 12-6M22 34c6 4 14 4 20 0M22 34c-6-4-10-10-12-14M42 34c6-4 10-10 12-14' stroke='%23f2f2ff' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@100;200;300;400;600&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>
+    document.documentElement.classList.add("js");
+    try { if (localStorage.getItem("kj-theme") === "paper") document.documentElement.dataset.theme = "paper"; } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#memory">Skip to content</a>
+
+  <div class="frame">
+    <!-- ───────────── NAV ───────────── -->
+    <header class="nav" id="top">
+      <nav class="nav-side nav-left" aria-label="Primary">
+        <a href="#memory">Memory</a>
+        <a href="#dispatches">Dispatches</a>
+      </nav>
+      <a class="logo" href="#top" aria-label="Kevin Jiang, home">
+        <span>KEVIN</span><span>JIANG</span>
+      </a>
+      <nav class="nav-side nav-right" aria-label="Secondary">
+        <a href="#research">Research</a>
+        <a href="#trail">Trail</a>
+        <a class="btn btn-solid btn-sm" href="#summon">Summon Kevin</a>
+      </nav>
+      <div class="nav-icons">
+        <a href="https://github.com/Azrkiel" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+        </a>
+        <a href="https://devpost.com/Azrkiel" target="_blank" rel="noopener" aria-label="Devpost">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.002 1.61 0 12.004 6.002 22.39h11.996L24 12.004 17.998 1.61zm1.593 4.084h3.947c3.605 0 6.276 1.695 6.276 6.31 0 4.436-3.21 6.302-6.456 6.302H7.595zm2.517 2.449v7.714h1.241c2.646 0 3.862-1.55 3.862-3.861.009-2.569-1.096-3.853-3.767-3.853z"/></svg>
+        </a>
+        <button class="icon-btn" id="invert" type="button" aria-label="Invert colors" title="Invert (i)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3a9 9 0 0 1 0 18z"/></svg>
+        </button>
+      </div>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mobileMenu">Menu</button>
+      <div class="mobile-menu" id="mobileMenu" hidden>
+        <a href="#memory">Ⅰ Memory</a>
+        <a href="#skills">Ⅱ Skills</a>
+        <a href="#dispatches">Ⅲ Dispatches</a>
+        <a href="#research">Ⅳ Research</a>
+        <a href="#trail">Ⅴ Trail</a>
+        <a href="#summon">Ⅵ Summon</a>
+      </div>
+    </header>
+
+    <!-- ───────────── HERO ───────────── -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow reveal">Azrkiel · Mechanical Engineering @ UVA · Agent Builder</p>
+        <h1 class="display reveal">
+          <span>The Messenger</span>
+          <span>Between Atoms</span>
+          <span><em>&amp;</em> Agents</span>
+        </h1>
+        <p class="lede reveal">
+          I build multi-agent systems that design real, physical things — text-to-CAD assemblies,
+          verified glider wings, benchmarks for AI-generated geometry — and the harnesses that keep
+          those agents honest.
+        </p>
+        <div class="cta-row reveal">
+          <button class="btn btn-solid" type="button" data-open-console>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 5 5-5 5M11 18h9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            Open Console
+          </button>
+          <a class="btn btn-ghost" href="#dispatches">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M14 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            Read Dispatches
+          </a>
+        </div>
+
+        <div class="install reveal" role="group" aria-label="Ways to reach Kevin">
+          <p class="install-label">Summon via terminal</p>
+          <div class="install-box">
+            <div class="install-tabs" role="tablist">
+              <button role="tab" aria-selected="true" data-cmd="echo &quot;hi kevin&quot; | mail fac3cq@virginia.edu" data-copy="fac3cq@virginia.edu">email</button>
+              <button role="tab" aria-selected="false" data-cmd="git clone https://github.com/Azrkiel/xvant-agent" data-copy="https://github.com/Azrkiel">github</button>
+              <button role="tab" aria-selected="false" data-cmd="open https://devpost.com/Azrkiel" data-copy="https://devpost.com/Azrkiel">devpost</button>
+            </div>
+            <div class="install-cmd">
+              <code id="installCmd"><span class="prompt">$</span> echo "hi kevin" | mail fac3cq@virginia.edu</code>
+              <button class="copy" id="copyBtn" type="button" aria-label="Copy">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M16 8V4H4v12h4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <figure class="hero-fig reveal">
+        <canvas id="sigil" aria-label="Animated wireframe of a polyhedral glider wing surrounded by radiating engraved rays" role="img"></canvas>
+        <figcaption>
+          <span>Fig. 01 — Polyhedral glider wing</span>
+          <span>L/D 11.9 · drag to rotate</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- ───────────── TICKER ───────────── -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>[dispatch] SignLine → Best Live Demo, Girls Hoo Hack ✓</span>
+        <span>[dispatch] Speak Up → 1st Place, HackNC Beginner ✓</span>
+        <span>[research] BenchCAD v1.0 → cited in Anthropic system card</span>
+        <span>[harness] XVANT → 1,000+ tests · ~38k lines</span>
+        <span>[cad] Mirum → 78 / 82 prompts → B-Rep assemblies</span>
+        <span>[lora] Qwen2.5-Coder-7B → valid CAD 48% → 78%</span>
+        <span>[cfd] RDE resonator neck → peak pressure −20%</span>
+        <span>[org] BExSTEM → 201 builders · 13 countries</span>
+        <span>[dispatch] SignLine → Best Live Demo, Girls Hoo Hack ✓</span>
+        <span>[dispatch] Speak Up → 1st Place, HackNC Beginner ✓</span>
+        <span>[research] BenchCAD v1.0 → cited in Anthropic system card</span>
+        <span>[harness] XVANT → 1,000+ tests · ~38k lines</span>
+        <span>[cad] Mirum → 78 / 82 prompts → B-Rep assemblies</span>
+        <span>[lora] Qwen2.5-Coder-7B → valid CAD 48% → 78%</span>
+        <span>[cfd] RDE resonator neck → peak pressure −20%</span>
+        <span>[org] BExSTEM → 201 builders · 13 countries</span>
+      </div>
+    </div>
+
+    <main>
+      <!-- ───────────── I. MEMORY ───────────── -->
+      <section class="section" id="memory">
+        <header class="section-head reveal">
+          <span class="numeral">Ⅰ</span>
+          <h2 class="display">Memory</h2>
+          <p class="section-note">What the agent remembers about its operator.</p>
+        </header>
+
+        <div class="memory-grid">
+          <div class="memory-copy reveal">
+            <p class="big-quote">
+              Hermes carried messages between worlds. I carry them between
+              <em>geometry</em> and <em>language</em> — turning what someone means into
+              something that can be machined, flown, or shipped.
+            </p>
+            <p>
+              I'm a first-year Mechanical Engineering student at the University of Virginia.
+              My research sits where large language models meet physical design: I score
+              AI-generated CAD for <strong>BenchCAD</strong>, generate and verify glider parts for an
+              early-stage generative-design startup, and build <strong>Mirum</strong>, a multi-agent
+              pipeline that turns a sentence into a parametric assembly.
+            </p>
+            <p>
+              On weekends I ship. Two hackathon wins this fall, a 38k-line orchestration harness
+              that runs Codex, Claude Code and OpenCode side by side, and a habit of writing far more
+              tests than anyone asked for.
+            </p>
+          </div>
+
+          <dl class="stats reveal">
+            <div><dt>Hackathon wins</dt><dd data-count="2">2</dd><span>Fall 2026</span></div>
+            <div><dt>Tests in XVANT</dt><dd data-count="1000" data-suffix="+">1,000+</dd><span>~38k lines</span></div>
+            <div><dt>Mirum prompts passed</dt><dd data-count="78" data-suffix="/82">78/82</dd><span>text → B-Rep</span></div>
+            <div><dt>BExSTEM builders</dt><dd data-count="201">201</dd><span>13 countries</span></div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ───────────── II. SKILLS ───────────── -->
+      <section class="section" id="skills">
+        <header class="section-head reveal">
+          <span class="numeral">Ⅱ</span>
+          <h2 class="display">Skills</h2>
+          <p class="section-note">Loaded from <code>~/.kevin/skills/</code></p>
+        </header>
+
+        <ul class="skills reveal">
+          <li>
+            <span class="skill-file">agents.md</span>
+            <span class="skill-desc">Multi-agent orchestration, tool-use, MCP servers, durable coding harnesses</span>
+            <span class="skill-tags">Claude Code · Codex · Gemini · Nemotron · MCP</span>
+          </li>
+          <li>
+            <span class="skill-file">ml.md</span>
+            <span class="skill-desc">Fine-tuning and evaluation for structured generation</span>
+            <span class="skill-tags">PyTorch · PyG · Hugging Face · LoRA · MediaPipe</span>
+          </li>
+          <li>
+            <span class="skill-file">cad-kernel.md</span>
+            <span class="skill-desc">Parametric B-Rep and implicit geometry, assembly constraints</span>
+            <span class="skill-tags">CadQuery · OpenCASCADE · PicoGK · Fusion 360 · Inventor</span>
+          </li>
+          <li>
+            <span class="skill-file">simulation.md</span>
+            <span class="skill-desc">Reacting-flow CFD and aerodynamic verification</span>
+            <span class="skill-tags">OpenFOAM · glide-ratio analysis · stability checks</span>
+          </li>
+          <li>
+            <span class="skill-file">ship.md</span>
+            <span class="skill-desc">Full-stack apps that survive a live demo</span>
+            <span class="skill-tags">TypeScript · Python · Java · SQL · Next.js · FastAPI · Docker · Fly.io</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ───────────── III. DISPATCHES ───────────── -->
+      <section class="section" id="dispatches">
+        <header class="section-head reveal">
+          <span class="numeral">Ⅲ</span>
+          <h2 class="display">Dispatches</h2>
+          <p class="section-note">Things I've built and delivered.</p>
+        </header>
+
+        <div class="filters reveal" role="toolbar" aria-label="Filter projects">
+          <button class="filter is-active" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter" data-filter="agents" aria-pressed="false">Agents</button>
+          <button class="filter" data-filter="cad" aria-pressed="false">CAD &amp; Hardware</button>
+          <button class="filter" data-filter="hackathon" aria-pressed="false">Hackathons</button>
+          <button class="filter" data-filter="tools" aria-pressed="false">Dev Tools</button>
+        </div>
+
+        <div class="cards">
+          <!-- XVANT -->
+          <article class="card card-wide reveal" data-tags="agents tools">
+            <div class="plate">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <path d="M10 60h22"/>
+                <path d="M32 60c14 0 14-30 30-30h48"/>
+                <path d="M32 60h78"/>
+                <path d="M32 60c14 0 14 30 30 30h48"/>
+                <circle cx="32" cy="60" r="4"/><circle cx="74" cy="30" r="3"/><circle cx="74" cy="60" r="3"/><circle cx="74" cy="90" r="3"/>
+                <path d="M88 26l4 4-4 4M88 56l4 4-4 4M88 86l4 4-4 4"/>
+              </svg>
+            </div>
+            <div class="card-body">
+              <p class="card-meta">Personal project · Sept 2026 – present</p>
+              <h3>XVANT</h3>
+              <p class="card-sub">Multi-agent orchestration harness</p>
+              <p>Runs Codex, Claude Code and OpenCode agents in parallel, each on its own isolated Git worktree, with a durable runtime that survives crashes and hand-offs.</p>
+              <ul class="chips"><li>1,000+ tests</li><li>~38k lines</li><li>TypeScript</li></ul>
+              <div class="card-links">
+                <a href="https://github.com/Azrkiel/xvant-agent" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- MIRUM -->
+          <article class="card card-wide reveal" data-tags="agents cad">
+            <div class="plate">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <path d="M40 40l24-12 24 12v28L64 80 40 68z"/>
+                <path d="M40 40l24 12 24-12M64 52v28"/>
+                <path d="M22 74l14-7 14 7v16l-14 7-14-7z"/>
+                <path d="M22 74l14 7 14-7M36 81v16"/>
+                <path d="M50 82l12-6" stroke-dasharray="2 3"/>
+                <circle cx="64" cy="52" r="2.5"/>
+              </svg>
+            </div>
+            <div class="card-body">
+              <p class="card-meta">Independent research · Mar 2026 – present</p>
+              <h3>Mirum</h3>
+              <p class="card-sub">Think it. Have it. — text to CAD assemblies</p>
+              <p>A multi-agent Gemini pipeline that turns plain text into parametric B-Rep CAD assemblies. Fine-tuned Qwen2.5-Coder-7B with LoRA on ABC CAD data to lift valid output from 48% to 78%.</p>
+              <ul class="chips"><li>78 / 82 prompts</li><li>LoRA</li><li>CadQuery</li><li>OpenCASCADE</li></ul>
+              <div class="card-links">
+                <a href="https://github.com/Azrkiel/Mirum" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- SIGNLINE -->
+          <article class="card reveal" data-tags="hackathon">
+            <span class="badge">Winner · Best Live Demo</span>
+            <div class="plate">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <path d="M44 84V50a5 5 0 0 1 10 0v18M54 66V40a5 5 0 0 1 10 0v26M64 64V44a5 5 0 0 1 10 0v24M74 66V54a5 5 0 0 1 10 0v14c0 14-8 22-20 22h-4c-8 0-12-4-16-10l-10-14a5 5 0 0 1 8-6l2 3"/>
+                <path d="M18 100h40M66 100h36" />
+              </svg>
+            </div>
+            <div class="card-body">
+              <p class="card-meta">Girls Hoo Hack · Oct 2026</p>
+              <h3>SignLine</h3>
+              <p class="card-sub">ASL-to-caption video calls</p>
+              <p>A signer's signs become editable captions while the hearing caller's speech is live-captioned. MediaPipe hand landmarks are classified on-device; user-taught signs and fingerspelling grow the vocabulary.</p>
+              <ul class="chips"><li>MediaPipe</li><li>On-device ML</li><li>WebRTC</li></ul>
+              <div class="card-links">
+                <a href="https://signline-api.fly.dev" target="_blank" rel="noopener">Live ↗</a>
+                <a href="https://devpost.com/software/signal-zku8j7" target="_blank" rel="noopener">Devpost ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- SPEAK UP -->
+          <article class="card reveal" data-tags="hackathon agents">
+            <span class="badge">1st Place · Beginner Track</span>
+            <div class="plate">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <rect x="30" y="30" width="16" height="30" rx="8"/>
+                <path d="M24 54a14 14 0 0 0 28 0M38 68v12M30 80h16"/>
+                <path d="M60 40a24 24 0 0 1 0 30M68 32a36 36 0 0 1 0 46M76 24a48 48 0 0 1 0 62"/>
+                <path d="M24 98h72"/><path d="M24 98h52" stroke-width="3"/>
+              </svg>
+            </div>
+            <div class="card-body">
+              <p class="card-meta">HackNC · Oct 2026</p>
+              <h3>Speak Up</h3>
+              <p class="card-sub">Impromptu debate trainer</p>
+              <p>Grades spoken arguments against a research-based rubric. The AI analyzes the speech; deterministic code computes the score — so feedback stays consistent and explainable.</p>
+              <ul class="chips"><li>Speech AI</li><li>Rubric scoring</li></ul>
+              <div class="card-links">
+                <a href="https://speak-up.fly.dev" target="_blank" rel="noopener">Live ↗</a>
+                <a href="https://devpost.com/software/speak-up-4ofanr" target="_blank" rel="noopener">Devpost ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- INTENT -->
+          <article class="card reveal" data-tags="hackathon agents tools">
+            <span class="badge badge-ghost">Results pending</span>
+            <div class="plate">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="22" r="6"/>
+                <path d="M60 28v12M60 40H30v14M60 40h30v14M60 40v14"/>
+                <rect x="22" y="54" width="16" height="12"/><rect x="52" y="54" width="16" height="12"/><rect x="82" y="54" width="16" height="12"/>
+                <path d="M30 66v10M60 66v10M90 66v10M24 76h72"/>
+                <path d="M26 92l4 4 8-8M56 92l4 4 8-8M86 92l4 4 8-8"/>
+              </svg>
+            </div>
+            <div class="card-body">
+              <p class="card-meta">Nebius × NVIDIA Global AI Hackathon · Oct 2026</p>
+              <h3>Intent</h3>
+              <p class="card-sub">Idea → requirement-traced build plan</p>
+              <p>Turns a rough software idea into a cited, requirement-traced brief that coding agents can actually execute, powered by NVIDIA Nemotron on Nebius Token Factory.</p>
+              <ul class="chips"><li>853 tests</li><li>Nemotron</li><li>Python</li></ul>
+              <div class="card-links">
+                <a href="https://show-intent.fly.dev" target="_blank" rel="noopener">Live ↗</a>
+                <a href="https://devpost.com/software/intent-3dug9q" target="_blank" rel="noopener">Devpost ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- VENN -->
+          <article class="card reveal" data-tags="hackathon agents">
+            <div class="plate">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="48" cy="50" r="24"/><circle cx="72" cy="50" r="24"/><circle cx="60" cy="71" r="24"/>
+                <path d="M60 52l2 5 5 .5-4 3 1.5 5-4.5-3-4.5 3 1.5-5-4-3 5-.5z"/>
+              </svg>
+            </div>
+            <div class="card-body">
+              <p class="card-meta">Hackathon build · Oct 2026</p>
+              <h3>Venn</h3>
+              <p class="card-sub">Let's find a time, together.</p>
+              <p>Account-free group scheduling with private calendar overlays. Gemini parses the ask; deterministic code checks free/busy, applies buffers, handles DST, and ranks the windows.</p>
+              <ul class="chips"><li>239 tests</li><li>Next.js 16</li><li>Postgres</li><li>Gemini</li></ul>
+              <div class="card-links">
+                <a href="https://devpost.com/software/venn-vkoaqp" target="_blank" rel="noopener">Devpost ↗</a>
+                <a href="https://github.com/Azrkiel/Venn" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- BENCHWARMERS -->
+          <article class="card reveal" data-tags="hackathon agents">
+            <div class="plate">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <rect x="16" y="28" width="88" height="64"/>
+                <path d="M60 28v64"/><circle cx="60" cy="60" r="11"/>
+                <path d="M16 46h16v28H16M104 46H88v28h16"/>
+                <path d="M32 50a10 10 0 0 1 0 20M88 50a10 10 0 0 0 0 20"/>
+              </svg>
+            </div>
+            <div class="card-body">
+              <p class="card-meta">Hackathon build · Oct 2026</p>
+              <h3>Benchwarmers</h3>
+              <p class="card-sub">Draft your squad. Call the next play.</p>
+              <p>Multiplayer game night with salary-cap lineups and timed predictions, driven by a simulated Alexa+ smart display that makes real MCP Streamable HTTP calls you can inspect live.</p>
+              <ul class="chips"><li>1,604 tests</li><li>MCP</li><li>WavLM</li><li>React</li></ul>
+              <div class="card-links">
+                <a href="https://devpost.com/software/benchwarmers" target="_blank" rel="noopener">Devpost ↗</a>
+                <a href="https://github.com/Azrkiel/Benchwarmers" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- PIXIE -->
+          <article class="card reveal" data-tags="agents tools">
+            <div class="plate">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <path d="M34 26v52l13-12 9 21 8-4-9-20h18z"/>
+                <path d="M84 24v14M77 31h14M80 27l8 8M88 27l-8 8"/>
+                <path d="M64 96c8-10 14 6 22-4s10-2 16-8" stroke-dasharray="3 3"/>
+              </svg>
+            </div>
+            <div class="card-body">
+              <p class="card-meta">Side project · 2026</p>
+              <h3>Pixie</h3>
+              <p class="card-sub">An AI cursor companion for Windows</p>
+              <p>Lives on your screen, points at things, and draws on top of whatever you're doing — an agent with a body instead of a chat box.</p>
+              <ul class="chips"><li>TypeScript</li><li>Desktop overlay</li></ul>
+              <div class="card-links">
+                <a href="https://github.com/Azrkiel/pixie" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- MODEL ROUTER -->
+          <article class="card reveal" data-tags="agents tools">
+            <div class="plate">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <path d="M22 60l12-12 12 12-12 12z"/>
+                <path d="M46 60c14 0 14-28 30-28M46 60h30M46 60c14 0 14 28 30 28"/>
+                <circle cx="84" cy="32" r="5"/><circle cx="86" cy="60" r="8"/><circle cx="88" cy="88" r="12"/>
+                <path d="M84 40v8M86 70v4" stroke-dasharray="2 2"/>
+              </svg>
+            </div>
+            <div class="card-body">
+              <p class="card-meta">Claude Code mod · 2026</p>
+              <h3>model-router</h3>
+              <p class="card-sub">Cheapest model that fits, then escalate</p>
+              <p>Routes each subagent to the smallest model that can do the job, with structured junior-to-senior escalation hand-offs when the task turns out harder than it looked.</p>
+              <ul class="chips"><li>Claude Code</li><li>TypeScript</li><li>Cost routing</li></ul>
+              <div class="card-links">
+                <a href="https://github.com/Azrkiel/model-router" target="_blank" rel="noopener">GitHub ↗</a>
+              </div>
+            </div>
+          </article>
+          <!-- MORE -->
+          <article class="card card-more" data-more>
+            <p class="card-meta">Archive · 30 repositories</p>
+            <h3>More in the archive</h3>
+            <p>Earlier text-to-CAD experiments for aerospace parts, an engineering-verification toolkit, Hermes agent bridges, the BExSTEM site, and a scholarship finder.</p>
+            <ul class="chips"><li>Text-to-CAD</li><li>engineering-verification</li><li>hermes-bridge</li><li>organize</li><li>bexstem.org</li></ul>
+            <div class="card-links">
+              <a href="https://github.com/Azrkiel?tab=repositories" target="_blank" rel="noopener">All repositories ↗</a>
+              <a href="https://devpost.com/Azrkiel" target="_blank" rel="noopener">Devpost ↗</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ───────────── IV. RESEARCH ───────────── -->
+      <section class="section" id="research">
+        <header class="section-head reveal">
+          <span class="numeral">Ⅳ</span>
+          <h2 class="display">Research</h2>
+          <p class="section-note">Where agents meet atoms.</p>
+        </header>
+
+        <ol class="research">
+          <li class="reveal">
+            <details open>
+              <summary>
+                <span class="r-num">01</span>
+                <span class="r-title">BenchCAD 2.0 <small>Benchmark for programmatic CAD</small></span>
+                <span class="r-when">Oct 2026 – now</span>
+              </summary>
+              <div class="r-body">
+                <p class="r-role">Undergraduate Researcher · Prof. Cheng Peng, UVA School of Data Science</p>
+                <p>A multi-university benchmark scoring AI-generated CAD — v1.0 was used in Anthropic's system card. I'm designing <strong>assembly-level</strong> scoring for hole alignment and part interference, going beyond per-part voxel IoU.</p>
+                <a href="https://benchcad.com" target="_blank" rel="noopener">benchcad.com ↗</a>
+              </div>
+            </details>
+          </li>
+          <li class="reveal">
+            <details>
+              <summary>
+                <span class="r-num">02</span>
+                <span class="r-title">Verified AI Generative Design <small>Glider parts in PicoGK</small></span>
+                <span class="r-when">Oct 2026 – now</span>
+              </summary>
+              <div class="r-body">
+                <p class="r-role">Intern · early-stage startup founded by Prof. Stephen Baek</p>
+                <p>I generate parametric glider parts for a pipeline that verifies AI-generated designs before STEP export. Built 12 wing variants — <strong>polyhedral wings</strong> led on stability checks and calculated glide ratio (11.9 vs. 10.8 tapered). That's the wing spinning at the top of this page.</p>
+                <div class="bar-compare" aria-label="Glide ratio comparison">
+                  <div><span>Polyhedral</span><i style="--w: 100%"></i><b>11.9</b></div>
+                  <div><span>Tapered</span><i style="--w: 90.8%"></i><b>10.8</b></div>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li class="reveal">
+            <details>
+              <summary>
+                <span class="r-num">03</span>
+                <span class="r-title">Mirum <small>Text-to-CAD assembly generation</small></span>
+                <span class="r-when">Mar 2026 – now</span>
+              </summary>
+              <div class="r-body">
+                <p class="r-role">Independent research project</p>
+                <p>Multi-agent Gemini pipeline that turns text into parametric B-Rep assemblies — passed 78 of 82 test prompts. Fine-tuned Qwen2.5-Coder-7B with LoRA on ABC CAD data, raising valid output from 48% to 78%.</p>
+                <div class="bar-compare" aria-label="Valid output before and after fine-tuning">
+                  <div><span>Base</span><i style="--w: 48%"></i><b>48%</b></div>
+                  <div><span>+ LoRA</span><i style="--w: 78%"></i><b>78%</b></div>
+                </div>
+                <a href="https://github.com/Azrkiel/Mirum" target="_blank" rel="noopener">github.com/Azrkiel/Mirum ↗</a>
+              </div>
+            </details>
+          </li>
+          <li class="reveal">
+            <details>
+              <summary>
+                <span class="r-num">04</span>
+                <span class="r-title">Rotating Detonation Engines <small>Transverse instability suppression</small></span>
+                <span class="r-when">May 2025 – Mar 2026</span>
+              </summary>
+              <div class="r-body">
+                <p class="r-role">Senior Capstone · Mathematics &amp; Science Academy</p>
+                <p>Simulated H<sub>2</sub>/O<sub>2</sub> detonations in OpenFOAM. A 4&nbsp;mm resonator neck cut peak pressure by ~20%.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ───────────── V. TRAIL ───────────── -->
+      <section class="section" id="trail">
+        <header class="section-head reveal">
+          <span class="numeral">Ⅴ</span>
+          <h2 class="display">Trail</h2>
+          <p class="section-note">The road the messenger took.</p>
+        </header>
+
+        <ol class="trail">
+          <li class="reveal">
+            <span class="t-when">2026 → 2030</span>
+            <div><h3>University of Virginia</h3><p>B.S. Mechanical Engineering, School of Engineering &amp; Applied Science.</p></div>
+          </li>
+          <li class="reveal">
+            <span class="t-when">Mar 2026 → now</span>
+            <div><h3>Taichi Bubble Tea — Assistant Manager</h3><p>Led 8 staff and grew monthly revenue 23%.</p></div>
+          </li>
+          <li class="reveal">
+            <span class="t-when">Dec 2024 → Jul 2026</span>
+            <div><h3>BExSTEM — Founder</h3><p>Ran a business &amp; STEM startup competition, fiscally sponsored by Hack Club, for 201 participants in 13 countries. Mentored 3 teams to launch — one to a $200k LOI.</p><a href="https://bexstem.org" target="_blank" rel="noopener">bexstem.org ↗</a></div>
+          </li>
+          <li class="reveal">
+            <span class="t-when">Aug 2023 → Jun 2026</span>
+            <div><h3>Tidewater Chinese School — Math Teacher</h3><p>Taught 30 elementary and middle schoolers.</p></div>
+          </li>
+          <li class="reveal">
+            <span class="t-when">→ Jun 2026</span>
+            <div><h3>Ocean Lakes HS — Math &amp; Science Academy</h3><p>4.71 weighted GPA. Senior capstone on rotating detonation engines.</p></div>
+          </li>
+          <li class="reveal">
+            <span class="t-when">2015 → 2026</span>
+            <div><h3>Eagle Scout · Junior Assistant Scoutmaster</h3><p>Led 12 volunteers across 172 hours to build 14 oyster castles for the Virginia Aquarium's shoreline restoration.</p></div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ───────────── VI. SUMMON ───────────── -->
+      <section class="section summon" id="summon">
+        <p class="eyebrow reveal"><span class="numeral-inline">Ⅵ</span> Summon</p>
+        <h2 class="display summon-title reveal">
+          <span>Send a message.</span>
+          <span>It will be delivered.</span>
+        </h2>
+        <p class="lede reveal">Open to research collaborations, internships, and anyone building agents that touch the physical world.</p>
+        <div class="cta-row reveal">
+          <a class="btn btn-solid btn-lg" href="mailto:fac3cq@virginia.edu">fac3cq@virginia.edu</a>
+          <a class="btn btn-ghost btn-lg" href="assets/Kevin-Jiang-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+        </div>
+        <ul class="summon-links reveal">
+          <li><a href="https://github.com/Azrkiel" target="_blank" rel="noopener">github.com/Azrkiel ↗</a></li>
+          <li><a href="https://devpost.com/Azrkiel" target="_blank" rel="noopener">devpost.com/Azrkiel ↗</a></li>
+          <li><span>Charlottesville, VA</span></li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>☤ Kevin Jiang · 2026</span>
+      <span>Hand-built. No framework. Press <kbd>~</kbd> to talk to the agent.</span>
+      <a href="#top">Back to top ↑</a>
+    </footer>
+  </div>
+
+  <!-- ───────────── CONSOLE ───────────── -->
+  <div class="console" id="console" role="dialog" aria-modal="false" aria-labelledby="consoleTitle" hidden>
+    <div class="console-bar">
+      <span id="consoleTitle">kevin-agent — zsh</span>
+      <button type="button" class="console-close" data-close-console aria-label="Close console">×</button>
+    </div>
+    <div class="console-out" id="consoleOut" aria-live="polite"></div>
+    <form class="console-in" id="consoleForm" autocomplete="off">
+      <label for="consoleInput" class="prompt">kevin ❯</label>
+      <input id="consoleInput" type="text" spellcheck="false" autocapitalize="off" placeholder="type 'help'" />
+    </form>
+  </div>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
