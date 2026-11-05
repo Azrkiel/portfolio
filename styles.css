@@ -323,6 +323,50 @@ figcaption,
   font-size: 10.5px;
 }
 
+/* ───────── compact flight lab ───────── */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.hero-workshop { min-width: 0; }
+.hero-workshop .hero-fig { aspect-ratio: auto; height: clamp(280px, 28vw, 400px); }
+.hero:has(.hero-workshop) { align-items: start; }
+.flight-lab { margin-top: 48px; border-top: 1px solid var(--line-strong); padding-top: 18px; font-size: 11px; }
+.flight-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.flight-heading h2 { margin: 0; font-family: var(--f-display); font-weight: 300; font-size: 26px; letter-spacing: 0.015em; }
+.flight-text-button { text-decoration: underline; text-underline-offset: 4px; min-height: 32px; }
+.flight-intro { margin: 3px 0 16px; color: var(--ink-dim); }
+.wing-controls { margin: 0; padding: 0; border: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 10px; }
+.wing-controls label { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px; }
+.wing-controls output { color: var(--ink-dim); font-variant-numeric: tabular-nums; }
+.wing-controls input { grid-column: 1 / -1; width: 100%; height: 28px; margin: 0; accent-color: var(--ink); cursor: ew-resize; }
+.flight-estimate { border-top: 1px solid var(--line); margin-top: 14px; padding-top: 12px; font-variant-numeric: tabular-nums; }
+.flight-launch { margin-top: 12px; }
+.flight-launch label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.flight-launch label span { color: var(--ink-dim); font-size: 10px; }
+.flight-launch-row { display: flex; gap: 8px; }
+.flight-launch input { width: 100%; min-width: 0; border: 1px solid var(--line-strong); border-radius: 3px; background: transparent; color: var(--ink); font: inherit; font-size: 16px; padding: 8px 10px; }
+.flight-launch input::placeholder { color: var(--ink-faint); }
+.flight-launch button { flex: none; height: 42px; }
+.flight-hint { margin: 5px 0 0; color: var(--ink-dim); }
+.flight-hint button { color: var(--ink); }
+.flight-status { min-height: 2em; margin: 6px 0; }
+.flight-assumptions { margin: 6px 0 12px; color: var(--ink-dim); font-size: 10px; line-height: 1.7; }
+.flight-board { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.flight-board summary { cursor: pointer; padding: 12px 0; font-size: 12px; }
+.flight-board summary span { float: right; color: var(--ink-dim); font-size: 10px; padding-top: 2px; }
+.flight-board-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.flight-board-head p { margin: 0; color: var(--ink-dim); font-size: 10px; }
+.flight-table-scroll { overflow-x: auto; }
+.flight-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 11px; }
+.flight-table th { color: var(--ink-dim); font-weight: 400; font-size: 10px; }
+.flight-table th, .flight-table td { padding: 10px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.flight-table td:first-child { width: 26px; color: var(--ink-dim); }
+.flight-table td:last-child, .flight-table th:last-child { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.flight-table strong { display: block; font-weight: 500; overflow-wrap: anywhere; }
+.flight-table small { display: block; color: var(--ink-dim); font-size: 9px; line-height: 1.7; margin-top: 3px; }
+.flight-source { display: inline-block; margin-top: 12px; color: var(--ink-dim); font-size: 10px; border-bottom: 1px solid var(--line); }
+.flight-telemetry { position: absolute; bottom: 12%; left: 12%; font-size: 11px; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
+.flight-lab button:disabled, .flight-lab fieldset:disabled { cursor: default; opacity: 0.55; }
+.flight-lab button:hover:not(:disabled) { opacity: 0.8; }
+
 /* ───────── ticker ───────── */
 .ticker {
   overflow: hidden;
@@ -816,7 +860,9 @@ figcaption,
   }
 
   .hero { grid-template-columns: 1fr; }
+  .hero-workshop { order: -1; width: 100%; max-width: 520px; margin: 0 auto 28px; }
   .hero-fig { order: -1; max-width: 520px; margin: 0 auto 28px; aspect-ratio: 1; }
+  .flight-lab { margin-top: 0; }
 
   .memory-grid { grid-template-columns: 1fr; }
   .skills li { grid-template-columns: 1fr; gap: 4px; }

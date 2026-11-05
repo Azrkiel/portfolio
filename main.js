@@ -6,6 +6,8 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const root = document.documentElement;
+  const glider = window.GliderModel;
+  let wingSpec = { ...glider.defaults };
 
   /* ───────────────── theme (invert) ───────────────── */
   const setTheme = (paper) => {
@@ -177,36 +179,37 @@
       return up.reverse().concat(lo.slice(1));
     })();
 
-    const SPAN = 2.6;          // half-span
-    const ROOT = 0.95;          // root chord
-    const BREAK = 0.52;         // polyhedral break (fraction of half-span)
+    const BREAK = 0.55;         // Mirum's polyhedral break
     const STATIONS = 10;
+    const geometryScale = 5.2 / glider.defaults.span_m;
 
     const wingStation = (s, side) => {
-      const chord = ROOT * (1 - 0.42 * s);
-      const sweep = s * SPAN * 0.16;
-      const d1 = Math.tan((3 * Math.PI) / 180);
-      const d2 = Math.tan((15 * Math.PI) / 180);
-      const z = s <= BREAK ? s * SPAN * d1 : BREAK * SPAN * d1 + (s - BREAK) * SPAN * d2;
-      const twist = (-3 * Math.PI / 180) * s; // washout
+      const station = glider.wingStation(wingSpec, s);
+      const chord = station.chord * geometryScale;
+      const sweep = station.x * geometryScale;
+      const z = station.z * geometryScale;
+      const twist = -station.twist;
       return airfoil.map(([x, y]) => {
-        const xr = (x - 0.25) * chord;
+        const xr = x * chord;
         const yr = y * chord;
         const xt = xr * Math.cos(twist) - yr * Math.sin(twist);
         const zt = xr * Math.sin(twist) + yr * Math.cos(twist);
-        return [xt + sweep - 0.1, side * s * SPAN, z + zt];
+        return [xt + sweep - 0.25 * glider.defaults.root_chord_m * geometryScale - 0.1, side * station.y * geometryScale, z + zt];
       });
     };
 
-    const ribs = [];
-    for (const side of [1, -1]) {
-      for (let i = 0; i < STATIONS; i++) {
-        const s = i / (STATIONS - 1);
-        ribs.push({ side, s, pts: wingStation(s, side) });
+    let ribs = [], breakRibs = [];
+    const rebuildWing = () => {
+      ribs = [];
+      for (const side of [1, -1]) {
+        for (let i = 0; i < STATIONS; i++) {
+          const s = i / (STATIONS - 1);
+          ribs.push({ side, s, pts: wingStation(s, side) });
+        }
       }
-    }
-    // extra rib exactly at the polyhedral break so the kink reads clearly
-    const breakRibs = [1, -1].map((side) => ({ side, s: BREAK, pts: wingStation(BREAK, side), brk: true }));
+      breakRibs = [1, -1].map((side) => ({ side, s: BREAK, pts: wingStation(BREAK, side), brk: true }));
+    };
+    rebuildWing();
 
     // fuselage pod: rings along X
     const fuselage = [];
@@ -232,6 +235,7 @@
     let dragging = false, lastX = 0, lastY = 0, pointerX = 0, pointerY = 0;
     let t0 = performance.now();
     let running = false, visible = true, raf = 0;
+    let flightProgress = null;
 
     const project = (p, cx, cy, scale, bob) => {
       let [x, y, z] = p;
@@ -345,10 +349,13 @@
       ctx.clearRect(0, 0, W, H);
       if (bgLayer) ctx.drawImage(bgLayer, 0, 0, W, H);
 
-      const cx = W / 2, cy = H / 2;
-      const scale = Math.min(W, H) * 0.135;
+      const flying = flightProgress !== null;
+      const progress = flightProgress || 0;
+      const cx = flying ? W * (0.30 + 0.42 * progress) : W / 2;
+      const cy = flying ? H * (0.5 - 0.16 * Math.sin(progress * Math.PI) + 0.12 * progress ** 2) : H / 2;
+      const scale = Math.min(W, H) * 0.135 * (flying ? 0.76 - 0.15 * progress : 1);
       const bob = reduceMotion ? 0 : Math.sin(t * 0.9) * 0.06;
-      roll = reduceMotion ? 0 : Math.sin(t * 0.6) * 0.06 + pointerX * 0.08;
+      roll = reduceMotion ? 0 : flying ? Math.sin(progress * Math.PI * 2) * 0.15 : Math.sin(t * 0.6) * 0.06 + pointerX * 0.08;
       const pitchNow = pitch + pointerY * 0.1;
       const savedPitch = pitch;
       pitch = pitchNow;
@@ -358,11 +365,24 @@
       const pr = ribs.map((r) => ({ ...r, q: r.pts.map(P) }));
       const pb = breakRibs.map((r) => ({ ...r, q: r.pts.map(P) }));
 
+      if (flying) {
+        ctx.strokeStyle = withAlpha(0.35);
+        ctx.lineWidth = 0.8;
+        ctx.setLineDash([3, 7]);
+        ctx.beginPath(); ctx.moveTo(W * 0.12, H * 0.78); ctx.lineTo(W * 0.88, H * 0.78); ctx.stroke();
+        ctx.setLineDash([]);
+        for (let i = 0; i < 9; i++) {
+          const x = W * (((i / 9 - progress * 0.5) % 1 + 1) % 1);
+          const y = H * (0.3 + (i % 4) * 0.1);
+          ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - W * 0.05, y); ctx.stroke();
+        }
+      }
+
       // light rays pulled from the wingtips (the "messenger" gesture)
       const R = Math.min(W, H) * 0.47;
       const rand = rng(424242);
       const tips = pr.filter((r) => r.s === 1).map((r) => r.q[Math.floor(r.q.length / 4)]);
-      tips.forEach(([tx, ty], ti) => {
+      if (!flying) tips.forEach(([tx, ty], ti) => {
         const base = Math.atan2(ty - cy, tx - cx);
         for (let i = 0; i < 26; i++) {
           const spread = (rand() - 0.5) * 0.9;
@@ -430,7 +450,7 @@
       ctx.beginPath(); ctx.moveTo(brk[0], brk[1]); ctx.lineTo(lx, ly); ctx.lineTo(lx + 64, ly); ctx.stroke();
       ctx.beginPath(); ctx.arc(brk[0], brk[1], 2.5, 0, Math.PI * 2); ctx.fill();
       ctx.font = `10px "IBM Plex Mono", monospace`;
-      ctx.fillText("Γ 3° → 15°", lx + 2, ly - 5);
+      ctx.fillText(`Γ ${wingSpec.dihedral_deg}°`, lx + 2, ly - 5);
 
       pitch = savedPitch;
     };
@@ -441,7 +461,7 @@
       raf = running ? requestAnimationFrame(loop) : 0;
     };
     const start = () => {
-      if (running || reduceMotion || !visible) return;
+      if (running || reduceMotion || !visible || flightProgress !== null || document.hidden) return;
       running = true;
       raf = requestAnimationFrame(loop);
     };
@@ -453,6 +473,7 @@
 
     // interaction
     canvas.addEventListener("pointerdown", (e) => {
+      if (flightProgress !== null) return;
       dragging = true;
       lastX = e.clientX;
       lastY = e.clientY;
@@ -480,13 +501,9 @@
       visible = entries[0].isIntersecting;
       visible ? start() : stop();
     }).observe(canvas);
+    new ResizeObserver(resize).observe(canvas);
     document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
 
-    let rT = 0;
-    window.addEventListener("resize", () => {
-      clearTimeout(rT);
-      rT = setTimeout(resize, 120);
-    });
     // fonts change label metrics; redraw once loaded
     document.fonts && document.fonts.ready.then(() => draw(performance.now()));
 
@@ -499,7 +516,28 @@
         buildBackground();
         draw(performance.now());
       },
-      spin(amount = 0.06) { vyaw = amount; setTimeout(() => (vyaw = reduceMotion ? 0 : 0.0028), 1600); },
+      update() { rebuildWing(); draw(performance.now()); },
+      async fly(onProgress) {
+        if (reduceMotion) { onProgress(1); return; }
+        stop();
+        dragging = false;
+        const savedYaw = yaw, savedPitch = pitch;
+        yaw = -1.05; pitch = 0.35;
+        flightProgress = 0;
+        const began = performance.now();
+        await new Promise((resolve) => {
+          const tick = (now) => {
+            flightProgress = Math.min(1, (now - began) / 4000);
+            draw(now); onProgress(flightProgress);
+            if (flightProgress < 1) requestAnimationFrame(tick);
+            else resolve();
+          };
+          requestAnimationFrame(tick);
+        });
+        flightProgress = null;
+        yaw = savedYaw; pitch = savedPitch;
+        draw(performance.now()); start();
+      },
     };
   })();
 
@@ -524,6 +562,166 @@
     out.appendChild(div);
     out.scrollTop = out.scrollHeight;
   };
+
+  /* ───────────────── compact Mirum flight lab ───────────────── */
+  const wingInputs = $$("[data-wing]");
+  const launchButton = $("#launchGlider");
+  const pilotInput = $("#pilotName");
+  const flightStatus = $("#flightStatus");
+  const telemetry = $("#flightTelemetry");
+  const flightBoard = $("#flightBoard");
+  let flightBusy = false, boardBusy = false;
+  try { pilotInput.value = localStorage.getItem("kj-pilot") || ""; } catch (e) { /* optional storage */ }
+
+  function updateWing() {
+    const labels = {
+      span_m: ["#spanValue", `${wingSpec.span_m.toFixed(2)} m`],
+      root_chord_m: ["#chordValue", `${wingSpec.root_chord_m.toFixed(3).replace(/0$/, "")} m`],
+      taper: ["#taperValue", wingSpec.taper.toFixed(2)],
+      dihedral_deg: ["#dihedralValue", `${wingSpec.dihedral_deg}°`],
+    };
+    for (const field of wingInputs) {
+      const [selector, value] = labels[field.dataset.wing];
+      $(selector).textContent = value;
+      field.setAttribute("aria-valuetext", value);
+    }
+    sigil?.update();
+    try {
+      const estimate = glider.evaluate(wingSpec);
+      $("#flightEstimate").textContent = `~${estimate.distance_m.toFixed(1)} m range · L/D ${estimate.glide_ratio.toFixed(1)} · ${estimate.mass_g} g`;
+      launchButton.disabled = flightBusy;
+      flightStatus.textContent = "Ready for takeoff.";
+    } catch (error) {
+      $("#flightEstimate").textContent = "Adjust the wing to fly.";
+      flightStatus.textContent = error.message;
+      launchButton.disabled = true;
+    }
+  }
+  wingInputs.forEach((field) => field.addEventListener("input", () => {
+    if (flightBusy) return;
+    wingSpec[field.dataset.wing] = Number(field.value);
+    updateWing();
+  }));
+  $("#resetGlider").addEventListener("click", () => {
+    if (flightBusy) return;
+    wingSpec = { ...glider.defaults };
+    wingInputs.forEach((field) => { field.value = wingSpec[field.dataset.wing]; });
+    updateWing();
+  });
+  updateWing();
+
+  async function deskRequest(path, data) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000);
+    try {
+      const response = await fetch(path, { signal: controller.signal, cache: "no-store",
+        ...(data ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) } : {}) });
+      if (!response.ok) {
+        const body = response.headers.get("content-type")?.includes("application/json") ? await response.json() : {};
+        const error = new Error(body.error || "Flight log unavailable.");
+        error.offline = [404, 405, 500, 501, 502, 503, 504].includes(response.status);
+        error.confirmedOffline = [404, 405, 501].includes(response.status);
+        throw error;
+      }
+      if (!response.headers.get("content-type")?.includes("application/json")) {
+        const error = new Error("Flight log unavailable."); error.offline = true; error.confirmedOffline = true; throw error;
+      }
+      return await response.json();
+    } catch (error) {
+      if (error.name === "AbortError" || error instanceof TypeError) error.offline = true;
+      throw error;
+    } finally { clearTimeout(timeout); }
+  }
+
+  async function loadLeaderboard() {
+    if (boardBusy) return;
+    boardBusy = true;
+    const refresh = $("#refreshBoard"), status = $("#boardStatus"), rows = $("#leaderboardRows");
+    refresh.disabled = true;
+    status.textContent = "Loading flight log…";
+    try {
+      const reply = await deskRequest("/api/leaderboard");
+      if (reply.model !== glider.version || !Array.isArray(reply.entries)) throw new Error("Unsupported flight log.");
+      const fragment = document.createDocumentFragment();
+      for (const [i, entry] of reply.entries.entries()) {
+        const spec = glider.validate(entry.spec);
+        if (typeof entry.pilot !== "string" || !Number.isFinite(entry.distance_m)) throw new Error("Invalid flight log.");
+        const row = document.createElement("tr");
+        const rank = document.createElement("td"), pilot = document.createElement("td"), distance = document.createElement("td");
+        rank.textContent = String(i + 1);
+        const name = document.createElement("strong"), specs = document.createElement("small");
+        name.textContent = entry.pilot;
+        specs.textContent = `${spec.span_m.toFixed(2)} m span · ${Number(spec.root_chord_m.toFixed(3))} m chord · ${spec.taper.toFixed(2)} taper · ${spec.dihedral_deg}°`;
+        pilot.append(name, specs);
+        distance.textContent = `${entry.distance_m.toFixed(1)} m`;
+        row.append(rank, pilot, distance); fragment.append(row);
+      }
+      rows.replaceChildren(fragment);
+      $(".flight-table").hidden = !reply.entries.length;
+      status.textContent = reply.entries.length ? "Furthest estimated flights · 10 m launch" : "No flights yet. Put your wing on the board.";
+    } catch (error) {
+      rows.replaceChildren();
+      $(".flight-table").hidden = true;
+      status.textContent = "Shared flight log offline. Practice flights are still available.";
+    } finally { boardBusy = false; refresh.disabled = false; }
+  }
+  flightBoard.addEventListener("toggle", () => { if (flightBoard.open) loadLeaderboard(); });
+  $("#refreshBoard").addEventListener("click", loadLeaderboard);
+  $("#flyCommand").addEventListener("click", () => { openConsole(); input.value = "fly"; });
+
+  async function launchFlight() {
+    if (flightBusy) { print("A flight is already in progress."); return; }
+    let result;
+    const frozenSpec = { ...wingSpec };
+    try { result = glider.evaluate(frozenSpec); }
+    catch (error) { flightStatus.textContent = error.message; print(escapeHtml(error.message)); return; }
+    const pilot = (pilotInput.value.trim() || "Anonymous").normalize("NFKC");
+    if (!/^[\p{L}\p{N} _.'-]{1,24}$/u.test(pilot)) {
+      flightStatus.textContent = "Use 1–24 letters, numbers, spaces, or . _ ' - for your alias.";
+      print(escapeHtml(flightStatus.textContent));
+      pilotInput.focus(); return;
+    }
+    flightBusy = true;
+    $("#wingControls").disabled = true;
+    launchButton.disabled = pilotInput.disabled = $("#resetGlider").disabled = true;
+    launchButton.textContent = "Preparing…";
+    flightStatus.textContent = "Checking in at the flight desk…";
+    if (!con.hidden) closeConsole();
+    $(".hero-fig").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    let saved = false, practiceNote = "";
+    try {
+      try {
+        const reply = await deskRequest("/api/flights", { pilot, spec: frozenSpec });
+        if (reply.result?.model !== glider.version || !Number.isFinite(reply.result.distance_m)) throw new Error("Unsupported flight result. Refresh and try again.");
+        result = reply.result; saved = true;
+        try { localStorage.setItem("kj-pilot", pilot); } catch (e) { /* optional storage */ }
+      } catch (error) {
+        if (!error.offline) throw error;
+        practiceNote = error.confirmedOffline ? "Practice only — flight log offline; no score saved." : "Practice flight — connection unavailable; leaderboard save unconfirmed.";
+      }
+      launchButton.textContent = "In flight…";
+      telemetry.hidden = false;
+      flightStatus.textContent = saved ? "In flight. Design logged to the shared leaderboard." : practiceNote;
+      await sigil.fly((progress) => {
+        telemetry.textContent = `FLIGHT ${String(Math.round(progress * 100)).padStart(3, "0")}% / ${(result.distance_m * progress).toFixed(1)} m`;
+      });
+      const summary = `${result.distance_m.toFixed(1)} m · L/D ${result.glide_ratio.toFixed(1)} · ${result.mass_g} g · estimated`;
+      flightStatus.textContent = saved ? `Touchdown. ${summary}. Logged as ${pilot}.` : `Touchdown. ${summary}. ${practiceNote}`;
+      flightStatus.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
+      print(`${escapeHtml(pilot)} → ${escapeHtml(summary)}\n${saved ? "Design saved. Type <i>leaderboard</i> to view the flight log." : escapeHtml(practiceNote)}`);
+      if (saved && flightBoard.open) await loadLeaderboard();
+    } catch (error) {
+      flightStatus.textContent = error.message;
+      print(escapeHtml(error.message));
+    } finally {
+      telemetry.hidden = true;
+      flightBusy = false;
+      $("#wingControls").disabled = false;
+      launchButton.disabled = pilotInput.disabled = $("#resetGlider").disabled = false;
+      launchButton.textContent = "Fly glider ↗";
+    }
+  }
+  $("#flightForm").addEventListener("submit", (event) => { event.preventDefault(); launchFlight(); });
 
   const projects = {
     xvant: ["XVANT", "Multi-agent orchestration harness — Codex, Claude Code & OpenCode in parallel on isolated git worktrees. 1,000+ tests, ~38k lines.", "https://github.com/Azrkiel/xvant-agent"],
@@ -557,7 +755,8 @@
           "  contact         how to reach me",
           "  goto &lt;section&gt;  jump to a section (e.g. goto research)",
           "  invert          swap ink and paper",
-          "  fly             give the wing a push",
+          "  fly             launch your current glider design",
+          "  leaderboard     view the shared flight log",
           "  clear           clear the screen",
         ].join("\n")
       ),
@@ -607,9 +806,12 @@
       goto(id);
     },
     invert: () => { toggleTheme(); print("ink and paper swapped."); },
-    fly: () => {
-      sigil && sigil.spin(0.08);
-      print("whoosh. ☤");
+    fly: launchFlight,
+    leaderboard: () => {
+      closeConsole();
+      flightBoard.open = true;
+      loadLeaderboard();
+      flightBoard.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
     },
     clear: () => { out.innerHTML = ""; },
     hermes: () => print("☤  the messenger is listening. try <i>help</i>."),

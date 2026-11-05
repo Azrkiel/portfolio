@@ -102,13 +102,63 @@
         </div>
       </div>
 
-      <figure class="hero-fig reveal">
-        <canvas id="sigil" aria-label="Animated wireframe of a polyhedral glider wing surrounded by radiating engraved rays" role="img"></canvas>
-        <figcaption>
-          <span>Fig. 01 — Polyhedral glider wing</span>
-          <span>L/D 11.9 · drag to rotate</span>
-        </figcaption>
-      </figure>
+      <div class="hero-workshop reveal">
+        <figure class="hero-fig">
+          <canvas id="sigil" aria-label="Adjustable polyhedral glider wireframe; drag to rotate" role="img"></canvas>
+          <figcaption>
+            <span>Fig. 01 — Mirum glider study</span>
+            <span>drag to rotate</span>
+          </figcaption>
+          <div class="flight-telemetry" id="flightTelemetry" aria-hidden="true" hidden></div>
+        </figure>
+
+        <section class="flight-lab" aria-labelledby="flightLabTitle">
+          <div class="flight-heading">
+            <h2 id="flightLabTitle">A little flight experiment</h2>
+            <button class="flight-text-button" id="resetGlider" type="button">Reset ↺</button>
+          </div>
+          <p class="flight-intro">Shape the wing. See how far it goes.</p>
+          <fieldset class="wing-controls" id="wingControls">
+            <legend class="sr-only">Wing specifications</legend>
+            <label for="wingSpan">Wingspan <output id="spanValue" for="wingSpan">1.10 m</output>
+              <input id="wingSpan" data-wing="span_m" type="range" min="0.60" max="1.40" step="0.01" value="1.10" />
+            </label>
+            <label for="wingChord">Root chord <output id="chordValue" for="wingChord">0.16 m</output>
+              <input id="wingChord" data-wing="root_chord_m" type="range" min="0.10" max="0.22" step="0.005" value="0.16" />
+            </label>
+            <label for="wingTaper">Taper ratio <output id="taperValue" for="wingTaper">0.60</output>
+              <input id="wingTaper" data-wing="taper" type="range" min="0.35" max="1.00" step="0.01" value="0.60" />
+            </label>
+            <label for="wingDihedral">Dihedral <output id="dihedralValue" for="wingDihedral">6°</output>
+              <input id="wingDihedral" data-wing="dihedral_deg" type="range" min="3" max="12" step="0.5" value="6" aria-describedby="flightAssumptions" />
+            </label>
+          </fieldset>
+          <div class="flight-estimate" id="flightEstimate"></div>
+          <form class="flight-launch" id="flightForm">
+            <label for="pilotName">Pilot alias <span>public on the leaderboard</span></label>
+            <div class="flight-launch-row">
+              <input id="pilotName" type="text" maxlength="24" placeholder="Anonymous" autocomplete="nickname" spellcheck="false" aria-describedby="flightAssumptions" />
+              <button class="btn btn-solid btn-sm" id="launchGlider" type="submit">Fly glider ↗</button>
+            </div>
+          </form>
+          <p class="flight-hint">Or open the console and type <button type="button" class="flight-text-button" id="flyCommand">fly</button>.</p>
+          <p class="flight-status" id="flightStatus" role="status" aria-live="polite">Ready for takeoff.</p>
+          <p class="flight-assumptions" id="flightAssumptions">10 m launch · still air · estimated distance. Compact model, not Mirum’s full solver. Dihedral is the effective tip angle.</p>
+          <details class="flight-board" id="flightBoard">
+            <summary>Flight log <span>shared leaderboard ↗</span></summary>
+            <div class="flight-board-head"><p id="boardStatus" role="status">Open to load the flight log.</p><button class="flight-text-button" id="refreshBoard" type="button">Refresh</button></div>
+            <div class="flight-table-scroll" tabindex="0" role="region" aria-label="Flight leaderboard and wing specifications">
+              <table class="flight-table">
+                <caption class="sr-only">Top ten designs by estimated distance, all launched from 10 metres in still air.</caption>
+                <thead><tr><th scope="col">#</th><th scope="col">Pilot / wing specs</th><th scope="col">Distance</th></tr></thead>
+                <tbody id="leaderboardRows"></tbody>
+              </table>
+            </div>
+            <p class="flight-assumptions">Top 10 · estimated flights · aliases are not verified identities. Identical alias + design entries appear once.</p>
+          </details>
+          <a class="flight-source" href="https://github.com/Azrkiel/Mirum" target="_blank" rel="noopener">Adapted from Mirum ↗</a>
+        </section>
+      </div>
     </section>
 
     <!-- ───────────── TICKER ───────────── -->
@@ -595,6 +645,7 @@
     </form>
   </div>
 
+  <script src="glider-model.js" defer></script>
   <script src="main.js" defer></script>
 </body>
 </html>
