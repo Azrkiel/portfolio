@@ -56,28 +56,12 @@
   );
   $$("main section[id]").forEach((s) => sectionObs.observe(s));
 
-  /* ───────────────── reveal + counters ───────────────── */
-  const countUp = (el) => {
-    const target = Number(el.dataset.count);
-    const suffix = el.dataset.suffix || "";
-    if (reduceMotion || !target) return;
-    const start = performance.now();
-    const dur = 1400;
-    const tick = (now) => {
-      const t = Math.min(1, (now - start) / dur);
-      const v = Math.round(target * (1 - Math.pow(1 - t, 3)));
-      el.textContent = v.toLocaleString("en-US") + suffix;
-      if (t < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  };
-
+  /* ───────────────── reveal ───────────────── */
   const revealObs = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
         e.target.classList.add("is-in");
-        $$("[data-count]", e.target).forEach(countUp);
         setTimeout(() => (e.target.style.transitionDelay = ""), 1400);
         revealObs.unobserve(e.target);
       });
@@ -574,10 +558,10 @@
       { key: "xvant", name: "XVANT", kind: "spec", href: "https://github.com/Azrkiel/xvant-agent",
         tag: "Multi-agent orchestration harness", blurb: "Codex, Claude Code and OpenCode in parallel on isolated git worktrees." },
       { key: "mirum", name: "Mirum", kind: "spec", href: "https://github.com/Azrkiel/Mirum",
-        tag: "Think it. Have it.", blurb: "Text → parametric B-Rep CAD assemblies. 78 of 82 prompts passed." },
+        tag: "Think it. Have it.", blurb: "Text → parametric B-Rep CAD assemblies from a multi-agent Gemini pipeline." },
       { key: "pixie", name: "Pixie", kind: "spec", href: "https://github.com/Azrkiel/pixie",
         tag: "AI cursor companion for Windows", blurb: "An agent with a body: it points and draws on your screen." },
-      { key: "model-router", name: "model-router", kind: "spec", href: "https://github.com/Azrkiel/model-router",
+      { key: "downshift", name: "downshift", kind: "spec", href: "https://github.com/Azrkiel/downshift",
         tag: "Cheapest model that fits, then escalate", blurb: "A Claude Code mod with junior-to-senior escalation hand-offs." },
     ];
 
@@ -585,7 +569,7 @@
     const cardFor = (name) => $$(".cards .card").find((c) => $("h3", c)?.textContent.trim() === name);
     items.forEach((it) => {
       const card = cardFor(it.name);
-      it.glyph = card ? $(".plate svg", card)?.outerHTML : "";
+      it.glyph = card ? $(".plate img, .plate svg", card)?.outerHTML : "";
       it.chips = card ? $(".chips", card)?.outerHTML : "";
       it.open = it.src || it.href;
     });
@@ -977,15 +961,15 @@
   $("#flightForm").addEventListener("submit", (event) => { event.preventDefault(); launchFlight(); });
 
   const projects = {
-    xvant: ["XVANT", "Multi-agent orchestration harness — Codex, Claude Code & OpenCode in parallel on isolated git worktrees. 1,000+ tests, ~38k lines.", "https://github.com/Azrkiel/xvant-agent"],
-    mirum: ["Mirum", "Text → parametric B-Rep CAD assemblies with a multi-agent Gemini pipeline. 78/82 prompts. LoRA on Qwen2.5-Coder-7B: 48% → 78% valid.", "https://github.com/Azrkiel/Mirum"],
+    xvant: ["XVANT", "Multi-agent orchestration harness — Codex, Claude Code & OpenCode in parallel on isolated git worktrees. TypeScript, Node.js, SQLite.", "https://github.com/Azrkiel/xvant-agent"],
+    mirum: ["Mirum", "Text → parametric B-Rep CAD assemblies with a multi-agent Gemini pipeline. Python, CadQuery, OpenCASCADE, LoRA on Qwen2.5-Coder-7B.", "https://github.com/Azrkiel/Mirum"],
     signline: ["SignLine", "ASL-to-caption video calls. 🏆 Best Live Demo, Girls Hoo Hack.", "https://signline-api.fly.dev"],
     speakup: ["Speak Up", "Impromptu debate trainer. 🏆 1st Place Beginner, HackNC.", "https://speak-up.fly.dev"],
-    intent: ["Intent", "Idea → requirement-traced build plan for coding agents. Nemotron on Nebius. 853 tests.", "https://show-intent.fly.dev"],
-    venn: ["Venn", "Account-free group scheduling with private calendar overlays. 239 tests. ⏳ Results pending.", "https://devpost.com/software/venn-vkoaqp"],
-    benchwarmers: ["Benchwarmers", "Multiplayer sports game night via a simulated Alexa+ display over MCP. 1,604 tests. ⏳ Results pending.", "https://devpost.com/software/benchwarmers"],
+    intent: ["Intent", "Idea → requirement-traced build plan for coding agents. Next.js, FastAPI, Nemotron on Nebius.", "https://show-intent.fly.dev"],
+    venn: ["Venn", "Account-free group scheduling with private calendar overlays. Next.js, Prisma, Postgres, Gemini. ⏳ Results pending.", "https://devpost.com/software/venn-vkoaqp"],
+    benchwarmers: ["Benchwarmers", "Multiplayer sports game night via a simulated Alexa+ display over MCP. React, Express, Amazon Bedrock. ⏳ Results pending.", "https://devpost.com/software/benchwarmers"],
     pixie: ["Pixie", "AI cursor companion for Windows that points and draws.", "https://github.com/Azrkiel/pixie"],
-    "model-router": ["model-router", "Claude Code mod: cheapest model that fits, with junior→senior escalation.", "https://github.com/Azrkiel/model-router"],
+    downshift: ["downshift", "Claude Code mod: cheapest model that fits, with junior→senior escalation.", "https://github.com/Azrkiel/downshift"],
   };
 
   const goto = (id) => {

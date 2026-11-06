@@ -167,7 +167,7 @@
         <span>[dispatch] SignLine → Best Live Demo, Girls Hoo Hack ✓</span>
         <span>[dispatch] Speak Up → 1st Place, HackNC Beginner ✓</span>
         <span>[research] BenchCAD v1.0 → cited in Anthropic system card</span>
-        <span>[harness] XVANT → 1,000+ tests · ~38k lines</span>
+        <span>[harness] XVANT → Codex · Claude Code · OpenCode in parallel</span>
         <span>[cad] Mirum → 78 / 82 prompts → B-Rep assemblies</span>
         <span>[lora] Qwen2.5-Coder-7B → valid CAD 48% → 78%</span>
         <span>[cfd] RDE resonator neck → peak pressure −20%</span>
@@ -175,7 +175,7 @@
         <span>[dispatch] SignLine → Best Live Demo, Girls Hoo Hack ✓</span>
         <span>[dispatch] Speak Up → 1st Place, HackNC Beginner ✓</span>
         <span>[research] BenchCAD v1.0 → cited in Anthropic system card</span>
-        <span>[harness] XVANT → 1,000+ tests · ~38k lines</span>
+        <span>[harness] XVANT → Codex · Claude Code · OpenCode in parallel</span>
         <span>[cad] Mirum → 78 / 82 prompts → B-Rep assemblies</span>
         <span>[lora] Qwen2.5-Coder-7B → valid CAD 48% → 78%</span>
         <span>[cfd] RDE resonator neck → peak pressure −20%</span>
@@ -192,33 +192,24 @@
           <p class="section-note">What the agent remembers about its operator.</p>
         </header>
 
-        <div class="memory-grid">
-          <div class="memory-copy reveal">
-            <p class="big-quote">
-              Hermes carried messages between worlds. I carry them between
-              <em>geometry</em> and <em>language</em> — turning what someone means into
-              something that can be machined, flown, or shipped.
-            </p>
-            <p>
-              I'm a first-year Mechanical Engineering student at the University of Virginia.
-              My research sits where large language models meet physical design: I score
-              AI-generated CAD for <strong>BenchCAD</strong>, generate and verify glider parts for an
-              early-stage generative-design startup, and build <strong>Mirum</strong>, a multi-agent
-              pipeline that turns a sentence into a parametric assembly.
-            </p>
-            <p>
-              On weekends I ship. Two hackathon wins this fall, a 38k-line orchestration harness
-              that runs Codex, Claude Code and OpenCode side by side, and a habit of writing far more
-              tests than anyone asked for.
-            </p>
-          </div>
-
-          <dl class="stats reveal">
-            <div><dt>Hackathon wins</dt><dd data-count="2">2</dd><span>Fall 2026</span></div>
-            <div><dt>Tests in XVANT</dt><dd data-count="1000" data-suffix="+">1,000+</dd><span>~38k lines</span></div>
-            <div><dt>Mirum prompts passed</dt><dd data-count="78" data-suffix="/82">78/82</dd><span>text → B-Rep</span></div>
-            <div><dt>BExSTEM builders</dt><dd data-count="201">201</dd><span>13 countries</span></div>
-          </dl>
+        <div class="memory-copy reveal">
+          <p class="big-quote">
+            Hermes carried messages between worlds. I carry them between
+            <em>geometry</em> and <em>language</em> — turning what someone means into
+            something that can be machined, flown, or shipped.
+          </p>
+          <p>
+            I'm a first-year Mechanical Engineering student at the University of Virginia.
+            My research sits where large language models meet physical design: I score
+            AI-generated CAD for <strong>BenchCAD</strong>, generate and verify glider parts for an
+            early-stage generative-design startup, and build <strong>Mirum</strong>, a multi-agent
+            pipeline that turns a sentence into a parametric assembly.
+          </p>
+          <p>
+            On weekends I ship. Two hackathon wins this fall, an orchestration harness
+            that runs Codex, Claude Code and OpenCode side by side, and a habit of writing far more
+            tests than anyone asked for.
+          </p>
         </div>
       </section>
 
@@ -339,7 +330,7 @@
               <h3>XVANT</h3>
               <p class="card-sub">Multi-agent orchestration harness</p>
               <p>Runs Codex, Claude Code and OpenCode agents in parallel, each on its own isolated Git worktree, with a durable runtime that survives crashes and hand-offs.</p>
-              <ul class="chips"><li>1,000+ tests</li><li>~38k lines</li><li>TypeScript</li></ul>
+              <ul class="chips"><li>TypeScript</li><li>Node.js</li><li>SQLite</li><li>Vitest</li></ul>
               <div class="card-links">
                 <a href="https://github.com/Azrkiel/xvant-agent" target="_blank" rel="noopener">GitHub ↗</a>
               </div>
@@ -363,7 +354,7 @@
               <h3>Mirum</h3>
               <p class="card-sub">Think it. Have it. — text to CAD assemblies</p>
               <p>A multi-agent Gemini pipeline that turns plain text into parametric B-Rep CAD assemblies. Fine-tuned Qwen2.5-Coder-7B with LoRA on ABC CAD data to lift valid output from 48% to 78%.</p>
-              <ul class="chips"><li>78 / 82 prompts</li><li>LoRA</li><li>CadQuery</li><li>OpenCASCADE</li></ul>
+              <ul class="chips"><li>Python</li><li>Gemini</li><li>LoRA</li><li>CadQuery</li><li>OpenCASCADE</li></ul>
               <div class="card-links">
                 <a href="https://github.com/Azrkiel/Mirum" target="_blank" rel="noopener">GitHub ↗</a>
               </div>
@@ -373,18 +364,15 @@
           <!-- SIGNLINE -->
           <article class="card reveal" data-tags="hackathon">
             <span class="badge">Winner · Best Live Demo</span>
-            <div class="plate">
-              <svg viewBox="0 0 120 120" aria-hidden="true">
-                <path d="M44 84V50a5 5 0 0 1 10 0v18M54 66V40a5 5 0 0 1 10 0v26M64 64V44a5 5 0 0 1 10 0v24M74 66V54a5 5 0 0 1 10 0v14c0 14-8 22-20 22h-4c-8 0-12-4-16-10l-10-14a5 5 0 0 1 8-6l2 3"/>
-                <path d="M18 100h40M66 100h36" />
-              </svg>
+            <div class="plate plate-photo">
+              <img src="assets/projects/signline.webp" alt="SignLine thumbnail: a bluebird taking flight above a pencil line" width="960" height="640" loading="lazy" decoding="async" />
             </div>
             <div class="card-body">
               <p class="card-meta">Girls Hoo Hack · Oct 2026</p>
               <h3>SignLine</h3>
               <p class="card-sub">ASL-to-caption video calls</p>
               <p>A signer's signs become editable captions while the hearing caller's speech is live-captioned. MediaPipe hand landmarks are classified on-device; user-taught signs and fingerspelling grow the vocabulary.</p>
-              <ul class="chips"><li>MediaPipe</li><li>On-device ML</li><li>WebRTC</li></ul>
+              <ul class="chips"><li>React</li><li>MediaPipe</li><li>ONNX Runtime</li><li>LiveKit</li><li>FastAPI</li></ul>
               <div class="card-links">
                 <a href="https://signline-api.fly.dev" target="_blank" rel="noopener">Live ↗</a>
                 <a href="https://devpost.com/software/signal-zku8j7" target="_blank" rel="noopener">Devpost ↗</a>
@@ -395,20 +383,15 @@
           <!-- SPEAK UP -->
           <article class="card reveal" data-tags="hackathon agents">
             <span class="badge">1st Place · Beginner Track</span>
-            <div class="plate">
-              <svg viewBox="0 0 120 120" aria-hidden="true">
-                <rect x="30" y="30" width="16" height="30" rx="8"/>
-                <path d="M24 54a14 14 0 0 0 28 0M38 68v12M30 80h16"/>
-                <path d="M60 40a24 24 0 0 1 0 30M68 32a36 36 0 0 1 0 46M76 24a48 48 0 0 1 0 62"/>
-                <path d="M24 98h72"/><path d="M24 98h52" stroke-width="3"/>
-              </svg>
+            <div class="plate plate-photo">
+              <img src="assets/projects/speakup.webp" alt="Speak Up thumbnail: a microphone on a lit stage" width="960" height="540" loading="lazy" decoding="async" />
             </div>
             <div class="card-body">
               <p class="card-meta">HackNC · Oct 2026</p>
               <h3>Speak Up</h3>
               <p class="card-sub">Impromptu debate trainer</p>
               <p>Grades spoken arguments against a research-based rubric. The AI analyzes the speech; deterministic code computes the score — so feedback stays consistent and explainable.</p>
-              <ul class="chips"><li>Speech AI</li><li>Rubric scoring</li></ul>
+              <ul class="chips"><li>FastAPI</li><li>Gemini</li><li>Supabase</li><li>JavaScript</li></ul>
               <div class="card-links">
                 <a href="https://speak-up.fly.dev" target="_blank" rel="noopener">Live ↗</a>
                 <a href="https://devpost.com/software/speak-up-4ofanr" target="_blank" rel="noopener">Devpost ↗</a>
@@ -419,21 +402,15 @@
           <!-- INTENT -->
           <article class="card reveal" data-tags="hackathon agents tools">
             <span class="badge badge-ghost">Results pending</span>
-            <div class="plate">
-              <svg viewBox="0 0 120 120" aria-hidden="true">
-                <circle cx="60" cy="22" r="6"/>
-                <path d="M60 28v12M60 40H30v14M60 40h30v14M60 40v14"/>
-                <rect x="22" y="54" width="16" height="12"/><rect x="52" y="54" width="16" height="12"/><rect x="82" y="54" width="16" height="12"/>
-                <path d="M30 66v10M60 66v10M90 66v10M24 76h72"/>
-                <path d="M26 92l4 4 8-8M56 92l4 4 8-8M86 92l4 4 8-8"/>
-              </svg>
+            <div class="plate plate-photo">
+              <img src="assets/projects/intent.webp" alt="Intent wordmark" width="960" height="640" loading="lazy" decoding="async" />
             </div>
             <div class="card-body">
               <p class="card-meta">Nebius × NVIDIA Global AI Hackathon · Oct 2026</p>
               <h3>Intent</h3>
               <p class="card-sub">Idea → requirement-traced build plan</p>
               <p>Turns a rough software idea into a cited, requirement-traced brief that coding agents can actually execute, powered by NVIDIA Nemotron on Nebius Token Factory.</p>
-              <ul class="chips"><li>853 tests</li><li>Nemotron</li><li>Python</li></ul>
+              <ul class="chips"><li>Next.js</li><li>FastAPI</li><li>Nemotron</li><li>Nebius</li></ul>
               <div class="card-links">
                 <a href="https://show-intent.fly.dev" target="_blank" rel="noopener">Live ↗</a>
                 <a href="https://devpost.com/software/intent-3dug9q" target="_blank" rel="noopener">Devpost ↗</a>
@@ -444,18 +421,15 @@
           <!-- VENN -->
           <article class="card reveal" data-tags="hackathon agents">
             <span class="badge badge-ghost">Results pending</span>
-            <div class="plate">
-              <svg viewBox="0 0 120 120" aria-hidden="true">
-                <circle cx="48" cy="50" r="24"/><circle cx="72" cy="50" r="24"/><circle cx="60" cy="71" r="24"/>
-                <path d="M60 52l2 5 5 .5-4 3 1.5 5-4.5-3-4.5 3 1.5-5-4-3 5-.5z"/>
-              </svg>
+            <div class="plate plate-photo">
+              <img src="assets/projects/venn.webp" alt="Venn logo" width="960" height="640" loading="lazy" decoding="async" />
             </div>
             <div class="card-body">
               <p class="card-meta">Devpost Build With AI: Basics · Oct 2026</p>
               <h3>Venn</h3>
               <p class="card-sub">Let's find a time, together.</p>
               <p>Account-free group scheduling with private calendar overlays. Gemini parses the ask; deterministic code checks free/busy, applies buffers, handles DST, and ranks the windows.</p>
-              <ul class="chips"><li>239 tests</li><li>Next.js 16</li><li>Postgres</li><li>Gemini</li></ul>
+              <ul class="chips"><li>Next.js</li><li>Prisma</li><li>Postgres</li><li>Gemini</li></ul>
               <div class="card-links">
                 <a href="https://devpost.com/software/venn-vkoaqp" target="_blank" rel="noopener">Devpost ↗</a>
                 <a href="https://github.com/Azrkiel/Venn" target="_blank" rel="noopener">GitHub ↗</a>
@@ -466,20 +440,15 @@
           <!-- BENCHWARMERS -->
           <article class="card reveal" data-tags="hackathon agents">
             <span class="badge badge-ghost">Results pending</span>
-            <div class="plate">
-              <svg viewBox="0 0 120 120" aria-hidden="true">
-                <rect x="16" y="28" width="88" height="64"/>
-                <path d="M60 28v64"/><circle cx="60" cy="60" r="11"/>
-                <path d="M16 46h16v28H16M104 46H88v28h16"/>
-                <path d="M32 50a10 10 0 0 1 0 20M88 50a10 10 0 0 0 0 20"/>
-              </svg>
+            <div class="plate plate-photo">
+              <img src="assets/projects/benchwarmers.webp" alt="Benchwarmers logo" width="900" height="600" loading="lazy" decoding="async" />
             </div>
             <div class="card-body">
               <p class="card-meta">Build, Ship, Shape: Amazon Developer Hackathon · Oct 2026</p>
               <h3>Benchwarmers</h3>
               <p class="card-sub">Draft your squad. Call the next play.</p>
               <p>Multiplayer game night with salary-cap lineups and timed predictions, driven by a simulated Alexa+ smart display that makes real MCP Streamable HTTP calls you can inspect live.</p>
-              <ul class="chips"><li>1,604 tests</li><li>MCP</li><li>WavLM</li><li>React</li></ul>
+              <ul class="chips"><li>React</li><li>Express</li><li>MCP</li><li>Amazon Bedrock</li><li>WavLM</li></ul>
               <div class="card-links">
                 <a href="https://devpost.com/software/benchwarmers" target="_blank" rel="noopener">Devpost ↗</a>
                 <a href="https://github.com/Azrkiel/Benchwarmers" target="_blank" rel="noopener">GitHub ↗</a>
@@ -501,14 +470,14 @@
               <h3>Pixie</h3>
               <p class="card-sub">An AI cursor companion for Windows</p>
               <p>Lives on your screen, points at things, and draws on top of whatever you're doing — an agent with a body instead of a chat box.</p>
-              <ul class="chips"><li>TypeScript</li><li>Desktop overlay</li></ul>
+              <ul class="chips"><li>Electron</li><li>TypeScript</li></ul>
               <div class="card-links">
                 <a href="https://github.com/Azrkiel/pixie" target="_blank" rel="noopener">GitHub ↗</a>
               </div>
             </div>
           </article>
 
-          <!-- MODEL ROUTER -->
+          <!-- DOWNSHIFT -->
           <article class="card reveal" data-tags="agents tools">
             <div class="plate">
               <svg viewBox="0 0 120 120" aria-hidden="true">
@@ -520,12 +489,12 @@
             </div>
             <div class="card-body">
               <p class="card-meta">Claude Code mod · 2026</p>
-              <h3>model-router</h3>
+              <h3>downshift</h3>
               <p class="card-sub">Cheapest model that fits, then escalate</p>
               <p>Routes each subagent to the smallest model that can do the job, with structured junior-to-senior escalation hand-offs when the task turns out harder than it looked.</p>
-              <ul class="chips"><li>Claude Code</li><li>TypeScript</li><li>Cost routing</li></ul>
+              <ul class="chips"><li>TypeScript</li><li>Claude Code hooks</li></ul>
               <div class="card-links">
-                <a href="https://github.com/Azrkiel/model-router" target="_blank" rel="noopener">GitHub ↗</a>
+                <a href="https://github.com/Azrkiel/downshift" target="_blank" rel="noopener">GitHub ↗</a>
               </div>
             </div>
           </article>

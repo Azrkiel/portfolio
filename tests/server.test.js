@@ -73,6 +73,9 @@ test("serves public assets without exposing source, database or encoded paths", 
       assert.ok([400, 404].includes(response.status), `${path}: ${response.status}`);
     }
     assert.equal((await fetch(app.url + "/glider-model.js")).status, 200);
+    const thumb = await fetch(app.url + "/assets/projects/signline.webp");
+    assert.equal(thumb.status, 200);
+    assert.equal(thumb.headers.get("content-type"), "image/webp");
   } finally { await app.close(); }
 });
 

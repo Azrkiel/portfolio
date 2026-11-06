@@ -23,7 +23,7 @@ function createPortfolioServer({ dbPath = resolve(__dirname, "data/flights.sqlit
     (SELECT fingerprint FROM flights ORDER BY distance_m DESC, created_at, fingerprint LIMIT 5000)`);
   const traffic = new Map();
   const mime = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml",
-    ".png": "image/png", ".jpg": "image/jpeg", ".pdf": "application/pdf", ".txt": "text/plain" };
+    ".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp", ".pdf": "application/pdf", ".txt": "text/plain" };
   const publicFiles = new Set(["/index.html", "/styles.css", "/main.js", "/glider-model.js"]);
   const assetsRoot = resolve(__dirname, "assets") + sep;
 
